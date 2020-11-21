@@ -1,0 +1,13 @@
+apiVersion: couchbase.com/v2
+kind: CouchbaseRoleBinding
+metadata:
+  name: test-binding
+  labels:
+    cluster: cb-test
+spec:
+  subjects:
+  - kind: CouchbaseUser
+    name: test
+  roleRef:
+    kind: CouchbaseGroup
+    name: test

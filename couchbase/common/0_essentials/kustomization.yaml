@@ -1,0 +1,8 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+namespace: couchbase
+resources:
+- _ns.yaml
+- _crd.yaml
+- _cb-admin_secret.yaml
+- _couchbase_operator.yaml

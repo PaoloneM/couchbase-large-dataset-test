@@ -1,0 +1,8 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+namespace: couchbase
+resources:
+- ./common/0_essentials
+- ./common/1_cluster_base
+- ./common/2_cluster_resources
+- _couchbase-console_ingress.yaml

@@ -1,0 +1,9 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+namespace: couchbase
+resources:
+- _logs_secret.yaml
+- _logs_bucket.yaml
+- _logs_cb-group.yaml
+- _logs_cb-user.yaml
+- _logs_cb-rbac.yaml

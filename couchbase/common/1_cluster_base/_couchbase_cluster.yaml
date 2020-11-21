@@ -1,0 +1,114 @@
+apiVersion: couchbase.com/v2
+kind: CouchbaseCluster
+metadata:
+  name: cb-test
+spec:
+  image: couchbase/server:6.6.0
+  paused: false
+  antiAffinity: true
+  softwareUpdateNotifications: true
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+    fsGroup: 1000
+  cluster:
+    clusterName: cb-test
+    dataServiceMemoryQuota: 6Gi
+    indexServiceMemoryQuota: 4Gi
+    searchServiceMemoryQuota: 4Gi
+    indexStorageSetting: plasma
+    autoFailoverTimeout: 360s
+    autoFailoverMaxCount: 3
+    autoFailoverOnDataDiskIssues: true
+    autoFailoverOnDataDiskIssuesTimePeriod: 120s
+    autoFailoverServerGroup: false
+    autoCompaction:
+      databaseFragmentationThreshold:
+        percent: 30
+      viewFragmentationThreshold:
+        percent: 30
+      parallelCompaction: false
+      timeWindow:
+        start: 02:00
+        end: 06:00
+        abortCompactionOutsideWindow: true
+      tombstonePurgeInterval: 72h
+  security:
+    adminSecret: cb-admin-secret
+    rbac:
+      managed: true
+      selector:
+        matchLabels:
+          cluster: cb-test
+  networking:
+    exposeAdminConsole: true
+    adminConsoleServices:
+    - data
+    adminConsoleServiceType: NodePort
+    exposedFeatures:
+      - xdcr
+      - client
+    exposedFeatureServiceType: NodePort
+  logging:
+    logRetentionTime: 604800s
+    logRetentionCount: 20
+  servers:
+  - size: 3
+    name: all_services
+    services:
+    - data
+    - index
+    - query
+    - search
+    resources:
+      limits:
+        cpu: 6000m
+        memory: 14Gi
+      requests:
+        cpu: 5000m
+        memory: 10Gi
+    volumeMounts:
+      default: cb-default-pvc
+      data: cb-data-pvc
+      index: cb-index-pvc
+    pod:
+      metadata:
+        labels:
+          couchbase_services: all
+        annotations:
+          couchbase.acme.com: production
+      spec:
+        nodeSelector:
+          app: cbapp
+        tolerations:
+        - key: app
+          operator: Equal
+          value: cbapp
+          effect: NoSchedule
+  buckets:
+    managed: true
+    selector:
+      matchLabels:
+        cluster: cb-test
+  volumeClaimTemplates:
+  - metadata:
+      name: cb-index-pvc
+    spec:
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 16Gi
+  - metadata:
+      name: cb-data-pvc
+    spec:
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 96Gi
+  - metadata:
+      name: cb-default-pvc
+    spec:
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 16Gi

@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchbase-console
+  annotations:
+    traefik.backend.loadbalancer.stickiness: "true"
+    traefik.backend.loadbalancer.stickiness.cookieName: ui-auth-couchbase.cb.large.dataset.test
+spec:
+  selector:
+    app: couchbase
+    couchbase_cluster: cb-test
+  ports:
+    - name: console
+      port: 8091
+      targetPort: 8091
+---      
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: couchbase-console-ingress
+  annotations:
+    traefik.frontend.rule.type: PathPrefixStrip
+  labels:
+    service_scope: private
+spec:
+  rules:
+  - host: couchbase-console.cb.large.dataset.test
+    http:
+        paths:
+          - path: /
+            backend:
+              serviceName: couchbase-console
+              servicePort: console

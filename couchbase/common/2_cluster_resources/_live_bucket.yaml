@@ -1,0 +1,13 @@
+apiVersion: couchbase.com/v2
+kind: CouchbaseBucket
+metadata:
+  name: live
+  labels:
+    cluster: cb-test
+spec:
+  memoryQuota: 5Gi
+  replicas: 1
+  ioPriority: high
+  evictionPolicy: valueOnly
+  enableFlush: true
+  enableIndexReplica: false

@@ -1,0 +1,408 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator-admission
+  namespace: couchbase
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator-admission
+rules:
+- apiGroups:
+  - couchbase.com
+  resources:
+  - couchbaseclusters
+  - couchbasebuckets
+  - couchbaseephemeralbuckets
+  - couchbasememcachedbuckets
+  - couchbasereplications
+  - couchbaseusers
+  - couchbasegroups
+  - couchbaserolebindings
+  - couchbasebackups
+  - couchbasebackuprestores
+  verbs:
+  - list
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - secrets
+  verbs:
+  - get
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - get
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator-admission
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: couchbase-operator-admission
+subjects:
+- kind: ServiceAccount
+  name: couchbase-operator-admission
+  namespace: couchbase
+
+---
+apiVersion: v1
+data:
+  tls-cert-file: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURpakNDQW5LZ0F3SUJBZ0lSQU9YYjFiV1BwNEd4eEp2c0wrRXFGcTR3RFFZSktvWklodmNOQVFFTEJRQXcKS2pFb01DWUdBMVVFQXhNZlkyOTFZMmhpWVhObExXOXdaWEpoZEc5eUxXRmtiV2x6YzJsdmJpQkRRVEFlRncweQpNREE1TVRjeE1UTXhNalZhRncwek1EQTVNVFV4TVRNeE1qVmFNQ2N4SlRBakJnTlZCQU1USEdOdmRXTm9ZbUZ6ClpTMXZjR1Z5WVhSdmNpMWhaRzFwYzNOcGIyNHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUsKQW9JQkFRRE82SHNMWjBzR2tVanM4VGtOcDRUaHRDUFlDQUloOGcvSE5XNUh0QWh3d1R0eTQzUVdMSzNMMWZoNgpDM3BsTlFVb3VyZEFHbVkxMnhYZ2VnK1NtK2g2MllQSkRISlMrVFNXdmY1TDZ0SmNHYjdUV2hjOEUrSXRwQTRBCmdDc1B6ZC9MdDdLZ2Mrd2xzaXVwQUcvQmk4VHlncDVtcTlSR2FCSHlpQWx3V1FQMzhIVVpQWXBDNGViVGQ2cm4KTFF3MVdVaWRUdEpGWmZsWWxqUVBWV3Z6ZEl2TzAxS2I0M2pyajJ2cUwrVGFpRUYzU3dTS0tEMStxdmt6UlRnaQpobjVRSmxCOUxpTis0anZ6L1JRdDdVQ01jbzFuR0IzNUJCdU5WQTh3MmxvN3kxYTJ0MTQ4YzNPOVlaQnh2M0RaCitBUmRtYll1RWtubk1DeVdSL0ZnTkswQndnVy9BZ01CQUFHamdhMHdnYW93RGdZRFZSMFBBUUgvQkFRREFnV2cKTUJNR0ExVWRKUVFNTUFvR0NDc0dBUVVGQndNQk1Bd0dBMVVkRXdFQi93UUNNQUF3SFFZRFZSME9CQllFRkp0ZgpmcGpSRk9FUEo1UzVEL0JUSEZENGEzQ3pNQjhHQTFVZEl3UVlNQmFBRktWc0EzNjVJeC9lVzdWN2cvYzdyaE1BCmIyK2dNRFVHQTFVZEVRUXVNQ3lDS21OdmRXTm9ZbUZ6WlMxdmNHVnlZWFJ2Y2kxaFpHMXBjM05wYjI0dVkyOTEKWTJoaVlYTmxMbk4yWXpBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQVVSWVlZVTU0WnVkWWhRdWZ3MVFMLzVDZApWWjhEb2Q1OGwvcFN6cFYyNWlKOTVFTkRHUCtuREJabjRVd2FzbGpyV0E5RlNjTCt0RWgxY2RFSk1odTZrQVpRCnd5dzFINExvWkNzeGpnaCtVT2Z0YjJmaHZsT29QTzlhakpWQzVFaGJ6bkRpRktadlVpY3pIN3k0YlVFc2MvWW8KbERSVUJaWkYrS0NqZm5COEtvSU0xZFlndEZ3am1WNDJvOHdDMVpsblpBcUtvUFRyOTRRZHhYd3VnMGMzMWhtRwpaek80WnNHS0RFQWpra3REcng4bzNkSG9HSjh0Q0k0a1ZIOWdySXMrMHRkZ2QzTWdVditSYUl6ZHpVL2tKblBOCjJLQkJocXc2L1MyN29CQ3kvQVVJWFIzOUdxM1FDVVpxblIrTjliQXpjcU9ERXUrNjJFbXFWN3o3c0o4ZkdBPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  tls-private-key-file: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBenVoN0MyZExCcEZJN1BFNURhZUU0YlFqMkFnQ0lmSVB4elZ1UjdRSWNNRTdjdU4wCkZpeXR5OVg0ZWd0NlpUVUZLTHEzUUJwbU5kc1Y0SG9Qa3B2b2V0bUR5UXh5VXZrMGxyMytTK3JTWEJtKzAxb1gKUEJQaUxhUU9BSUFyRDgzZnk3ZXlvSFBzSmJJcnFRQnZ3WXZFOG9LZVpxdlVSbWdSOG9nSmNGa0Q5L0IxR1QySwpRdUhtMDNlcTV5ME1OVmxJblU3U1JXWDVXSlkwRDFWcjgzU0x6dE5TbStONDY0OXI2aS9rMm9oQmQwc0VpaWc5CmZxcjVNMFU0SW9aK1VDWlFmUzRqZnVJNzgvMFVMZTFBakhLTlp4Z2QrUVFialZRUE1OcGFPOHRXdHJkZVBITnoKdldHUWNiOXcyZmdFWFptMkxoSko1ekFzbGtmeFlEU3RBY0lGdndJREFRQUJBb0lCQVFETnM3MVlpZm5CN3NERQpwOUZqN002a0laYWRHT0VkNUd5aFRWSjFRTncvVlN5SVBPOVZlRmZVMWNZeGQ2WFlab3paZ0QvZElDSExteU0xCng4UWhxcFRIUmViS0EzREpZdTVRaTFUOUh0akNMZXBVYnpXNFNjQk1SZFNSMU5wNjNOK0l4Zmwxb2FuOWxCUHAKOGdBcE9JNjExdndwOE55YW5xNXhJNlBXcVBqVURkV2tuNXZZYU0yRVd2L25ZZ1NCYjh2eDBmRDkyaHl6SXg0dwpzZ3Y1MW5yTHBEOGpLTGRkYm1lQkd4MmV1VjV5b1lsOENOUG02NGVwNUd2ZUtVWVFNalRrdCtlUzNGNEljemt1CjhsWUNRd2lKT1dGUXpsZWFpaDd2ZnVQZnBKdGMzOVJDa3pMNDBVRHBkdk1HUlFNUDBuanhHMjFsYU5PSHIvMUgKWjhRZG1GNTVBb0dCQVBVa0lva3NRZGIxSGVuR3hqV2lkZkl5OWlFbFd1bDByVUVJcWZFTi9xa2taMSs3Nks1QQpxdE93U0R5TFNKNE4vQTc2NlR6dEdCYm5mZGxmeC9zWHlMRzRCTW1KMFpDN0ExR1d2UUtKbFhLbW9YSHZibnVYCmkvSXoyQUFING9OQnJLMmxIWU1GNVg2UmJlUWF5aVNFajNucU5JVmNLQkQ2emtvZFBIc3RqRHdWQW9HQkFOZ1MKeWUzMUlwSXRJSHFnRi9WS0pjYnFLUWRnbmhBZC81VmlmZVpqamhnUHhMMDl3SDlpdEdPTC9qVWxBc210UWhwUApYcCt4cGpCeHFhckxVaUt6UHp0MGJXWHdJV0kwZk5NRWQxdmx2cm05MDlVbGxLSVRDL0YybllMQXVldWtqall5Cnh0SXJBTVNqcG1XSW1admJBNk92TkNXWW95SmtEcWdOd1BNV2VPdURBb0dBSGZjVHphYStTWk5lMjdPemlOemEKQkFnY3RBS0g4VitVeWcxUUVLcEFSZGF3V0RCMUNjL1gwZGFMamZNTXBsMVpRVStFY1RFZUw3YU9XS0x2cEE3TgpOb1FpK2F2Q0ZTbjNCdU1oS1kwOTJtenA4UzV1VitjM2NSekxPMzI3UDRZb29IVTlmVVdjUHZOeDlsOGI5SWpMCnJRQm0rU0pCdDRtZzY4aFZHMDEvQmQwQ2dZRUF4emRMaG1IbEpmRUZhUW9DRE4zNFJwWE9qa2ErZFEyemYvLzMKSkZ2VnZzbUxFdy9FVTY2bHNzSjM5bmZSUWpERUtZM1VLRmlhYVQvaXR0NFBOSDhmWmFuSzA1bTZyZGpHM2FmWQpoSm9tWndwbUxMY2hldTBrcmRRM0ZUNnNMRjdqMzRTaFcxVGF1SEpLRUlNSlhYRm93Wm5mOG1ud3Z0eVJ4dEFuCmZmalNOQkVDZ1lFQXVWbmhrYXc5OTR0WFNibnh1Nnc3Z0wvMVQyQ0ZteTBkVnhpRDZubHA3VitWUW52UURSTnIKN2VuekVIcWNscHA3cVRZMWtNU3BqbUV5RXlhNlkzR3hOL0E4R2tCUGZ0WENrZ1YxanAzNlM3cXBZRldER2Vrawp0V1g4T2dNVU5PVDdjc3huRHc5TUZsVms2dy8rS1ZEZ2V4bWtHRXA3RXU5eTNZRGJBZGw3VUFZPQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator-admission
+  namespace: couchbase
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator-admission
+  namespace: couchbase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: couchbase-operator-admission
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: couchbase-operator-admission
+    spec:
+      containers:
+      - args:
+        - --logtostderr
+        - --stderrthreshold
+        - "0"
+        - --tls-cert-file
+        - /var/run/secrets/couchbase.com/couchbase-operator-admission/tls-cert-file
+        - --tls-private-key-file
+        - /var/run/secrets/couchbase.com/couchbase-operator-admission/tls-private-key-file
+        command:
+        - couchbase-operator-admission
+        image: couchbase/admission-controller:2.0.2
+        name: couchbase-operator-admission
+        ports:
+        - containerPort: 8443
+          name: https
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: https
+            scheme: HTTPS
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/run/secrets/couchbase.com/couchbase-operator-admission
+          name: couchbase-operator-admission
+          readOnly: true
+      serviceAccountName: couchbase-operator-admission
+      volumes:
+      - name: couchbase-operator-admission
+        secret:
+          secretName: couchbase-operator-admission
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator-admission
+  namespace: couchbase
+spec:
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: 8443
+  selector:
+    app: couchbase-operator-admission
+status:
+  loadBalancer: {}
+
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator-admission
+webhooks:
+- clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURJVENDQWdtZ0F3SUJBZ0lSQU8xZmhseFEycUN6L3d3WVNYaHJMY0l3RFFZSktvWklodmNOQVFFTEJRQXcKS2pFb01DWUdBMVVFQXhNZlkyOTFZMmhpWVhObExXOXdaWEpoZEc5eUxXRmtiV2x6YzJsdmJpQkRRVEFlRncweQpNREE1TVRjeE1UTXhNalZhRncwek1EQTVNVFV4TVRNeE1qVmFNQ294S0RBbUJnTlZCQU1USDJOdmRXTm9ZbUZ6ClpTMXZjR1Z5WVhSdmNpMWhaRzFwYzNOcGIyNGdRMEV3Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXcKZ2dFS0FvSUJBUURJOFdWNmxJSWVyZGZMTElmUjJDZTNXc2JIN0pLUWtjSmIzR0dYeWlPblcrVGVzT2hPMGFmTwpxVW1sbnkrcXJCVUJWenZsRWFxczVheXd2ZkpZS0FIZTZMSkN2MFF0d0laZ21OWnp5ZUFCeXdZay8wcUI0RngxClplTDdneU03RzdXaE1JUFFhU3M4M2h5aVMvYjlhWFhsMVRVTWdZSDlNRFpmQlNWOTA0NzMzV2t2T1JydHNpcGsKb0M5d1pMUWdKWW9tMHJjWnFDUDFScmpDQ0hGR0RWdzNqemMyeHE4SzJJMHJwTlNyRTlSclFwWTRYZVBYRHYvYgpONlZJTTFDblMwUUJyNXZvdCtSd2E1R2s4NG0rdk1LQXhVSnFyS3BoQ1BFMEo4Y1dBYkx2a0k1TW9JeGFoVytPCmlNZDRPeEdCdUszUzhmbG9PK3Y5eUx4cFlRaUM4dmN0QWdNQkFBR2pRakJBTUE0R0ExVWREd0VCL3dRRUF3SUIKQmpBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJTbGJBTit1U01mM2x1MWU0UDNPNjRUQUc5dgpvREFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBWG10c0lZWWpqVXJ3ZENsVm1ncmdWRjJwOCtjQzd1M08zSlhMCnRpNkd3YVoyc3hmeU4zV3lUNE1oalZTSVhkZjAxSERqTkdFdEdEZVEyTHhNTFQzbG51UHBtcURaY2dLNWFFUWkKWHJYdTFMSWFsMnBUalVONVJoK2VYOTgySnJLSFlTTFpNSEY5NmhKeEFhQkVMM1pVbXlib3dVV1N1ODJLY0pldgoyME9TMnJxTWpLQm5CTFZkcGtpSEJlUjNhQ2xSbkdDZlV0UmJ0TWJlWmZXZ0pYcDZaK0x5eXZnVXVRYyt5eFJjClhuUjJXNGZ1b3NrRkxRUGR2NUNRSlYwT2NpTnVVck1NNFc2cjFUa2RadGMwWkZYRE12RkRVM0JIdW1kWjlzOSsKMlY2VkVnVmphVTZNREJqRjQyU0lMc1lDUUhSNnlaYS9ad28yVlQ5Y0Q4WWhqMHFxa3c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    service:
+      name: couchbase-operator-admission
+      namespace: couchbase
+      path: /couchbaseclusters/mutate
+  name: couchbase-operator-admission.couchbase.svc
+  rules:
+  - apiGroups:
+    - couchbase.com
+    apiVersions:
+    - v1
+    - v2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - couchbaseclusters
+    - couchbasebuckets
+    - couchbaseephemeralbuckets
+    - couchbasememcachedbuckets
+    - couchbasereplications
+    - couchbaseusers
+    - couchbasegroups
+    - couchbaserolebindings
+    - couchbasebackups
+    - couchbasebackuprestores
+
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator-admission
+webhooks:
+- clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURJVENDQWdtZ0F3SUJBZ0lSQU8xZmhseFEycUN6L3d3WVNYaHJMY0l3RFFZSktvWklodmNOQVFFTEJRQXcKS2pFb01DWUdBMVVFQXhNZlkyOTFZMmhpWVhObExXOXdaWEpoZEc5eUxXRmtiV2x6YzJsdmJpQkRRVEFlRncweQpNREE1TVRjeE1UTXhNalZhRncwek1EQTVNVFV4TVRNeE1qVmFNQ294S0RBbUJnTlZCQU1USDJOdmRXTm9ZbUZ6ClpTMXZjR1Z5WVhSdmNpMWhaRzFwYzNOcGIyNGdRMEV3Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXcKZ2dFS0FvSUJBUURJOFdWNmxJSWVyZGZMTElmUjJDZTNXc2JIN0pLUWtjSmIzR0dYeWlPblcrVGVzT2hPMGFmTwpxVW1sbnkrcXJCVUJWenZsRWFxczVheXd2ZkpZS0FIZTZMSkN2MFF0d0laZ21OWnp5ZUFCeXdZay8wcUI0RngxClplTDdneU03RzdXaE1JUFFhU3M4M2h5aVMvYjlhWFhsMVRVTWdZSDlNRFpmQlNWOTA0NzMzV2t2T1JydHNpcGsKb0M5d1pMUWdKWW9tMHJjWnFDUDFScmpDQ0hGR0RWdzNqemMyeHE4SzJJMHJwTlNyRTlSclFwWTRYZVBYRHYvYgpONlZJTTFDblMwUUJyNXZvdCtSd2E1R2s4NG0rdk1LQXhVSnFyS3BoQ1BFMEo4Y1dBYkx2a0k1TW9JeGFoVytPCmlNZDRPeEdCdUszUzhmbG9PK3Y5eUx4cFlRaUM4dmN0QWdNQkFBR2pRakJBTUE0R0ExVWREd0VCL3dRRUF3SUIKQmpBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJTbGJBTit1U01mM2x1MWU0UDNPNjRUQUc5dgpvREFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBWG10c0lZWWpqVXJ3ZENsVm1ncmdWRjJwOCtjQzd1M08zSlhMCnRpNkd3YVoyc3hmeU4zV3lUNE1oalZTSVhkZjAxSERqTkdFdEdEZVEyTHhNTFQzbG51UHBtcURaY2dLNWFFUWkKWHJYdTFMSWFsMnBUalVONVJoK2VYOTgySnJLSFlTTFpNSEY5NmhKeEFhQkVMM1pVbXlib3dVV1N1ODJLY0pldgoyME9TMnJxTWpLQm5CTFZkcGtpSEJlUjNhQ2xSbkdDZlV0UmJ0TWJlWmZXZ0pYcDZaK0x5eXZnVXVRYyt5eFJjClhuUjJXNGZ1b3NrRkxRUGR2NUNRSlYwT2NpTnVVck1NNFc2cjFUa2RadGMwWkZYRE12RkRVM0JIdW1kWjlzOSsKMlY2VkVnVmphVTZNREJqRjQyU0lMc1lDUUhSNnlaYS9ad28yVlQ5Y0Q4WWhqMHFxa3c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    service:
+      name: couchbase-operator-admission
+      namespace: couchbase
+      path: /couchbaseclusters/validate
+  name: couchbase-operator-admission.couchbase.svc
+  rules:
+  - apiGroups:
+    - couchbase.com
+    apiVersions:
+    - v1
+    - v2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - couchbaseclusters
+    - couchbasebuckets
+    - couchbaseephemeralbuckets
+    - couchbasememcachedbuckets
+    - couchbasereplications
+    - couchbaseusers
+    - couchbasegroups
+    - couchbaserolebindings
+    - couchbasebackups
+    - couchbasebackuprestores
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator
+  namespace: couchbase
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator
+  namespace: couchbase
+rules:
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  - cronjobs
+  verbs:
+  - list
+  - watch
+  - create
+  - update
+  - delete
+- apiGroups:
+  - couchbase.com
+  resources:
+  - couchbaseclusters
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+- apiGroups:
+  - couchbase.com
+  resources:
+  - couchbasebuckets
+  - couchbaseephemeralbuckets
+  - couchbasememcachedbuckets
+  - couchbasereplications
+  - couchbaseusers
+  - couchbasegroups
+  - couchbaserolebindings
+  - couchbasebackups
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - couchbase.com
+  resources:
+  - couchbasebackuprestores
+  verbs:
+  - list
+  - watch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - create
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - services
+  - persistentvolumeclaims
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - pods/exec
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - list
+  - create
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - get
+  - create
+  - delete
+  - list
+  - watch
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator
+  namespace: couchbase
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: couchbase-operator
+subjects:
+- kind: ServiceAccount
+  name: couchbase-operator
+  namespace: couchbase
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator
+  namespace: couchbase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: couchbase-operator
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: couchbase-operator
+    spec:
+      containers:
+      - args:
+        - --pod-create-timeout=10m0s
+        command:
+        - couchbase-operator
+        env:
+        - name: WATCH_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        image: couchbase/operator:2.0.2
+        name: couchbase-operator
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8383
+          name: prometheus
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: http
+            scheme: HTTP
+        resources: {}
+      serviceAccountName: couchbase-operator
+status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: couchbase-operator
+  namespace: couchbase
+spec:
+  ports:
+  - name: http-pprof
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: http-prometheus
+    port: 8383
+    protocol: TCP
+    targetPort: 8383
+  selector:
+    app: couchbase-operator
+status:
+  loadBalancer: {}
+

@@ -1,0 +1,11 @@
+apiVersion: couchbase.com/v2
+kind: CouchbaseGroup
+metadata:
+  name: test
+  labels:
+    cluster: cb-test
+spec:
+  roles:
+  - name: bucket_full_access
+    bucket: live
+  - name: ro_admin

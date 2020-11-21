@@ -1,0 +1,13 @@
+apiVersion: couchbase.com/v2
+kind: CouchbaseBucket
+metadata:
+  name: dedalo
+  labels:
+    cluster: cb-test
+spec:
+  memoryQuota: 500Mi
+  replicas: 2
+  ioPriority: high
+  evictionPolicy: valueOnly
+  enableFlush: true
+  enableIndexReplica: false
