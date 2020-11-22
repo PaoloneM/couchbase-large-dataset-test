@@ -6,3 +6,4 @@ resources:
 - _crd.yaml
 - _cb-admin_secret.yaml
 - _couchbase_operator.yaml
+- _cb-lazy_storage.yaml

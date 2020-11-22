@@ -7,15 +7,11 @@ spec:
   paused: false
   antiAffinity: true
   softwareUpdateNotifications: true
-  securityContext:
-    runAsUser: 1000
-    runAsNonRoot: true
-    fsGroup: 1000
   cluster:
     clusterName: cb-test
-    dataServiceMemoryQuota: 6Gi
-    indexServiceMemoryQuota: 4Gi
-    searchServiceMemoryQuota: 4Gi
+    dataServiceMemoryQuota: 3Gi
+    indexServiceMemoryQuota: 1Gi
+    searchServiceMemoryQuota: 1Gi
     indexStorageSetting: plasma
     autoFailoverTimeout: 360s
     autoFailoverMaxCount: 3
@@ -62,11 +58,11 @@ spec:
     - search
     resources:
       limits:
-        cpu: 6000m
-        memory: 14Gi
+        cpu: 4000m
+        memory: 6Gi
       requests:
-        cpu: 5000m
-        memory: 10Gi
+        cpu: 3000m
+        memory: 5Gi
     volumeMounts:
       default: cb-default-pvc
       data: cb-data-pvc
@@ -94,21 +90,21 @@ spec:
   - metadata:
       name: cb-index-pvc
     spec:
-      storageClassName: do-block-storage
+      storageClassName: standard-lazy-bound
       resources:
         requests:
           storage: 16Gi
   - metadata:
       name: cb-data-pvc
     spec:
-      storageClassName: do-block-storage
+      storageClassName: standard-lazy-bound
       resources:
         requests:
           storage: 96Gi
   - metadata:
       name: cb-default-pvc
     spec:
-      storageClassName: do-block-storage
+      storageClassName: standard-lazy-bound
       resources:
         requests:
           storage: 16Gi
