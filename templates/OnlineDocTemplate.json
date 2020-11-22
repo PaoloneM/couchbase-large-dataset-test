@@ -1,7 +1,7 @@
 {
     "queue": "{{integer(0, 20)}}",
     "docId": "{{guid()}}",
-    "isActive": "{{bool()}}",
+    "isLive": false,
     "status": "{{random('pending', 'parsed', 'delivered', 'refused')}}",
     "to": {
         "id": "{{guid()}}",

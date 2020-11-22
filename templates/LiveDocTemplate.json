@@ -1,0 +1,27 @@
+{
+    "queue": "{{integer(0, 20)}}",
+    "docId": "{{guid()}}",
+    "isLive": true,
+    "status": "{{random('pending', 'parsed', 'delivered', 'refused')}}",
+    "to": {
+        "id": "{{guid()}}",
+        "first": "{{lorem(1, words}}",
+        "last": "{{lorem(1, words}}"
+    },
+    "toCompany": "{{lorem(1, words}}",
+    "from": {
+        "id": "{{guid()}}",
+        "first": "{{lorem(1, words}}",
+        "last": "{{lorem(1, words}}",
+        "company": "{{lorem(1, words}}"
+    },
+    "tags": [
+        {
+          "repeat(2, 6)": "{{lorem(1, words}}"
+        }
+    ],
+    "scanDatetime": "{{date(new Date(1974, 1, 1), new Date(2018, 12, 31))}}",
+    "firstProcessDatetime": "{{date(new Date(1974, 1, 1), new Date(2018, 12, 31))}}",
+    "lastUpdate": "{{date(new Date(1974, 1, 1), new Date(2018, 12, 31))}}"
+
+}
