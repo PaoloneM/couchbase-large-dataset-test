@@ -1,11 +1,11 @@
 apiVersion: couchbase.com/v2
 kind: CouchbaseBucket
 metadata:
-  name: live
+  name: offline
   labels:
     cluster: cb-test
 spec:
-  memoryQuota: 2Gi
+  memoryQuota: 1Gi
   replicas: 1
   ioPriority: high
   evictionPolicy: valueOnly
