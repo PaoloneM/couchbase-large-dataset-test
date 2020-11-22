@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dataset-gen
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      containers:
+      - name: dataset-gen
+        image: noesysmobile/cb-large-dataset-generator:0.2.1
+        env:
+          - name: IF_PATH
+            value: /template/DocTemplate.json
+          - name: RECORD_COUNT
+            value: "10"
+          - name: CB_BUCKET_NAME
+            value: live
+          - name: CB_URL
+            value: couchbase://cb-test-srv.couchbase.svc.cluster.local
+          - name: CB_USER
+            value: test
+          - name: CB_PWD
+            valueFrom:
+              secretKeyRef:
+                name: bucket-secret
+                key: password
+        volumeMounts:
+        - name: template-volume
+          mountPath: /template
+      volumes:
+        - name: template-volume
+          configMap:
+            name: doc-template
+      restartPolicy: Never
