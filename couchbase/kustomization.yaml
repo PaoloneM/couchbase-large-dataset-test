@@ -5,4 +5,3 @@ resources:
 - ./common/0_essentials
 - ./common/1_cluster_base
 - ./common/2_cluster_resources
-- _couchbase-console_ingress.yaml

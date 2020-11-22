@@ -73,14 +73,6 @@ spec:
           couchbase_services: all
         annotations:
           couchbase.acme.com: production
-      spec:
-        nodeSelector:
-          app: cbapp
-        tolerations:
-        - key: app
-          operator: Equal
-          value: cbapp
-          effect: NoSchedule
   buckets:
     managed: true
     selector:
